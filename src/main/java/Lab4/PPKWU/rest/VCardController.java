@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class VCardControllerr {
+public class VCardController {
 
 	private static final String URL_SERVICE = "https://panoramafirm.pl/szukaj?k=";
 
