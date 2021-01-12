@@ -3,6 +3,9 @@
 Podczas implementacji serwisu została wykorzystana zewnętrzna biblioteka jsoup, która umożliwia poberanie treści oraz przewtarzanie ich po stronie serwera. 
 
 # Opis Api
+
+<br />
+
 Generowanie strony html z wyszukiwaniami
 #### Adres URL: /vcard/?searchKey={searchKey}
 #### Endpoint zwraca wygnereowaną strone html, która wyświetla listę kontaktów, które zostały pobrane ze strony https://panoramafirm.pl/ na bazie słowa kluczowego. 
@@ -10,6 +13,8 @@ Generowanie strony html z wyszukiwaniami
 ####     Parametr:searchKey (String) - parametr wyszukiwania na stronie https://panoramafirm.pl/
 Przykładowowe zapytanie:
 `http://localhost:8080/search?searchKey=hydraulik`
+
+<br />
 
 Generowanie Vcard
 #### Adres URL: /vcard/?companyName={companyName}&telephone={telephone}&email={email}&address={adress`
@@ -22,6 +27,7 @@ Generowanie Vcard
 ##### address (String) - adres firmy
 ##### telephone (String) - numer kontaktowy
 
+<br />
 
 Przykładowowe zapytanie:
 `http://localhost:8080/VCard?companyName=name&telephone=telephone&email=email&address=address`
