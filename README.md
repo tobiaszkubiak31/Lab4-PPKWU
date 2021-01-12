@@ -6,7 +6,7 @@ Podczas implementacji serwisu została wykorzystana zewnętrzna biblioteka jsoup
 
 <br />
 
-Generowanie strony html z wyszukiwaniami
+# Generowanie strony html z wyszukiwaniami
 #### Adres URL: /vcard/?searchKey={searchKey}
 #### Endpoint zwraca wygnereowaną strone html, która wyświetla listę kontaktów, które zostały pobrane ze strony https://panoramafirm.pl/ na bazie słowa kluczowego. 
 ### Metoda:GET 
@@ -16,7 +16,7 @@ Przykładowowe zapytanie:
 
 <br />
 
-Generowanie Vcard
+# Generowanie Vcard
 #### Adres URL: /vcard/?companyName={companyName}&telephone={telephone}&email={email}&address={adress`
 ### Endpoint zwraca plik vCard(.vcf), który posiada informacje, które zostały podane w parametrach
 ### Metoda:GET 
