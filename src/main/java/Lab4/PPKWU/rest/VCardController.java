@@ -15,6 +15,7 @@ import java.net.URLConnection;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -41,15 +42,17 @@ public class VCardController {
 		@RequestParam(value = "email") String email,
 		@RequestParam(value = "address") String address,
 		HttpServletResponse response)
+
+
 		throws IOException {
 		String generatedVCard = generateVCard(companyName,telephone,email,address);
-		File file = new File(companyName + ".vcf");
+		File file = new File(email + ".vcf");
 		FileOutputStream outputStream = new FileOutputStream(file);
 		outputStream.write(generatedVCard.getBytes());
 		outputStream.flush();
 		outputStream.close();
 
-		Path path = Paths.get(companyName + ".vcf");
+		Path path = Paths.get(email + ".vcf");
 		Resource resource = new UrlResource(path.toUri());
 		return ResponseEntity.ok()
 			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
