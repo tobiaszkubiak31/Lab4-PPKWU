@@ -33,6 +33,7 @@ public class VCardController {
 		throws IOException {
 		Document document = getDocumentFromUrl(URL_SERVICE + searchKey);
 		List<Contact> contacts = getContactsFromHtml(document);
+		convertContactsHtml(contacts);
 		return generateVCard();
 	}
 
@@ -42,10 +43,24 @@ public class VCardController {
 		throws IOException {
 		Document document = getDocumentFromUrl(URL_SERVICE + searchKey);
 		List<Contact> contacts = getContactsFromHtml(document);
+		String contactsToHtml = convertContactsHtml(contacts);
 		return "<html>\n" +"<script> console.log( \"Hello JavaScript!\"); </script>"
 			+
 			"<header><title>Welcome</title></header>\n" +
-			"<body>\n" + "hello world"  + "</body></html>";
+			"<body>\n" + contactsToHtml  + "</body></html>";
+	}
+
+	private String convertContactsHtml(List<Contact> contacts) {
+		String html = "";
+		for (Contact contact : contacts) {
+			html +=  "<br><br><br>" +
+				"<a> name:" + contact.getName() +"</a> \n" +
+				"<a> email:" + contact.getEmail() +"</a> \n" +
+				"<a> telephone:" + contact.getTelephone() +"</a> \n" +
+				"<a> address:" + contact.getAddress() +"</a> \n" +
+				"<button> Generate vcard: </button> \n";
+		}
+		return html;
 	}
 
 	public String generateVCard(){
