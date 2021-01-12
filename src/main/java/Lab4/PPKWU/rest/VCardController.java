@@ -84,17 +84,14 @@ public class VCardController {
 
 	public String generateVCard(String companyName, String telephone, String email,
 		String address){
-		VCard vcard = new VCard();
-
-		StructuredName n = new StructuredName();
-		n.setFamily("Doe");
-		n.setGiven("Jonathan");
-		n.getPrefixes().add("Mr");
-		vcard.setStructuredName(n);
-
-		vcard.setFormattedName("John Doe");
-
-		return Ezvcard.write(vcard).version(VCardVersion.V4_0).go();
+		return "BEGIN:VCARD\n" +
+			"VERSION:4.0\n" +
+			"ORG:" + companyName + "\n" +
+			"N:" + companyName + "\n" +
+			"TEL:" + telephone + "\n" +
+			"ADR;TYPE=WORK,PREF:;;" + address + "\n" +
+			"EMAIL;TYPE=INTERNET:" + email + "\n" +
+			"END:VCARD";
 	}
 
 	private List<Contact> getContactsFromHtml(Document document){
