@@ -36,6 +36,18 @@ public class VCardController {
 		return generateVCard();
 	}
 
+	@GetMapping("/search")
+	public String generateSearchHTMLEndpoint(
+		@RequestParam(value = "searchKey") String searchKey, HttpServletResponse response)
+		throws IOException {
+		Document document = getDocumentFromUrl(URL_SERVICE + searchKey);
+		List<Contact> contacts = getContactsFromHtml(document);
+		return "<html>\n" +"<script> console.log( \"Hello JavaScript!\"); </script>"
+			+
+			"<header><title>Welcome</title></header>\n" +
+			"<body>\n" + "hello world"  + "</body></html>";
+	}
+
 	public String generateVCard(){
 		VCard vcard = new VCard();
 
