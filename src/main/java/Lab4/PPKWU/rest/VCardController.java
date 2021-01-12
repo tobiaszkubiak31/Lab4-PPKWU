@@ -6,10 +6,14 @@ import ezvcard.VCard;
 import ezvcard.VCardVersion;
 import ezvcard.property.StructuredName;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +22,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,13 +36,24 @@ public class VCardController {
 	private static final String URL_SERVICE = "https://panoramafirm.pl/szukaj?k=";
 
 	@GetMapping("/VCard")
-	public String generateVCardEndpoint(
-		@RequestParam(value = "searchKey") String searchKey, HttpServletResponse response)
+	public ResponseEntity generateVCardEndpoint(
+		@RequestParam(value = "companyName") String companyName,@RequestParam(value = "telephone") String telephone,
+		@RequestParam(value = "email") String email,
+		@RequestParam(value = "address") String address,
+		HttpServletResponse response)
 		throws IOException {
-		Document document = getDocumentFromUrl(URL_SERVICE + searchKey);
-		List<Contact> contacts = getContactsFromHtml(document);
-		convertContactsHtml(contacts);
-		return generateVCard();
+		String generatedVCard = generateVCard(companyName,telephone,email,address);
+		File file = new File(companyName + ".vcf");
+		FileOutputStream outputStream = new FileOutputStream(file);
+		outputStream.write(generatedVCard.getBytes());
+		outputStream.flush();
+		outputStream.close();
+
+		Path path = Paths.get(companyName + ".vcf");
+		Resource resource = new UrlResource(path.toUri());
+		return ResponseEntity.ok()
+			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
+			.body(resource);
 	}
 
 	@GetMapping("/search")
@@ -63,7 +82,8 @@ public class VCardController {
 		return html;
 	}
 
-	public String generateVCard(){
+	public String generateVCard(String companyName, String telephone, String email,
+		String address){
 		VCard vcard = new VCard();
 
 		StructuredName n = new StructuredName();
